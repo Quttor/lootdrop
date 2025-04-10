@@ -1,0 +1,17 @@
+name: LootDrop
+main: quttor.lootdrop.LootDrop
+version: 1.0
+api-version: 1.21
+commands:
+  lootdrop:
+    description: Main loot drop command
+    usage: /lootdrop <reload|drop <id>|begin>
+    permission: lootdrops.admin
+permissions:
+  lootdrops.player:
+    description: Allows the player to receive loot drop broadcasts
+    default: true
+  lootdrops.admin:
+    description: Allows using lootdrop admin commands
+    default: op
+
