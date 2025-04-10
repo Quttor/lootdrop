@@ -18,6 +18,5 @@ public class LootDropListener implements Listener {
 
     @EventHandler
     public void onChestOpen(PlayerInteractEvent event) {
-        // Optional: handle special interactions with loot chests
     }
 }
