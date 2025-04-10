@@ -18,7 +18,7 @@ public class LootDropCommand implements CommandExecutor {
         if (args.length == 0 || args[0].equalsIgnoreCase("reload")) {
             LootDrop.getInstance().reloadConfig();
             AreaManager.getInstance().loadAreas();
-            ScheduleManager.getInstance().loadSchedule(); // optional: reload schedule too
+            ScheduleManager.getInstance().loadSchedule(); 
             LootScheduler.getInstance().stopAll();
             LootScheduler.getInstance().startAll();
             sender.sendMessage("§aLootDrop config reloaded.");
