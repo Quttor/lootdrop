@@ -34,12 +34,26 @@ public class DropArea {
     public World getWorld() { return world; }
 
     public Location getRandomDropLocation() {
+        WorldBorder border = world.getWorldBorder();
         Random random = new Random();
-        int x = x1 + random.nextInt(x2 - x1 + 1);
-        int z = z1 + random.nextInt(z2 - z1 + 1);
-        int y = world.getHighestBlockYAt(x, z);
-        return new Location(world, x + 0.5, y, z + 0.5);
+
+        for (int attempts = 0; attempts < 30; attempts++) {
+            int x = x1 + random.nextInt(x2 - x1 + 1);
+            int z = z1 + random.nextInt(z2 - z1 + 1);
+            int y = world.getHighestBlockYAt(x, z);
+            Location loc = new Location(world, x + 0.5, y, z + 0.5);
+
+            if (!border.isInside(loc)) continue;
+
+            Material type = world.getBlockAt(loc).getType();
+            if (type == Material.WATER || type == Material.LAVA) continue;
+
+            return loc;
+        }
+
+        return null; // No valid location found
     }
+
 
     public List<ItemStack> generateLoot() {
         List<ItemStack> loot = new ArrayList<>();
