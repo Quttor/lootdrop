@@ -94,6 +94,6 @@ public class DropArea {
             return loc;
         }
 
-        return null; // No valid location found
+        return null;
     }
 }
