@@ -1,10 +1,8 @@
 package quttor.lootdrop;
 
 import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import quttor.lootdrop.DropArea;
-
 
 import java.util.*;
 
@@ -12,11 +10,11 @@ public class DropArea {
     private final int id;
     private final World world;
     private final int x1, z1, x2, z2;
-    private final Map<String, Double> lootTable;
+    private final Map<String, LootEntry> lootTable;
     private final int interval;
     private final boolean sync;
 
-    public DropArea(int id, World world, int x1, int z1, int x2, int z2, Map<String, Double> lootTable, int interval, boolean sync) {
+    public DropArea(int id, World world, int x1, int z1, int x2, int z2, Map<String, LootEntry> lootTable, int interval, boolean sync) {
         this.id = id;
         this.world = world;
         this.x1 = Math.min(x1, x2);
@@ -26,6 +24,51 @@ public class DropArea {
         this.lootTable = lootTable;
         this.interval = interval;
         this.sync = sync;
+    }
+
+    public static class LootEntry {
+        public final double chance;
+        public final boolean stack;
+        public final int min;
+        public final int max;
+        public final Map<Enchantment, Integer> enchantments;
+
+        public LootEntry(double chance, boolean stack, int min, int max, Map<Enchantment, Integer> enchantments) {
+            this.chance = chance;
+            this.stack = stack;
+            this.min = min;
+            this.max = max;
+            this.enchantments = enchantments;
+        }
+    }
+
+    public List<ItemStack> generateLoot() {
+        List<ItemStack> loot = new ArrayList<>();
+        Random random = new Random();
+
+        for (Map.Entry<String, LootEntry> entry : lootTable.entrySet()) {
+            String key = entry.getKey();
+            LootEntry lootEntry = entry.getValue();
+
+            if (random.nextDouble() < lootEntry.chance) {
+                Material mat = Material.matchMaterial(key);
+                if (mat != null) {
+                    int amount = lootEntry.stack
+                            ? lootEntry.min + random.nextInt(lootEntry.max - lootEntry.min + 1)
+                            : 1;
+
+                    ItemStack item = new ItemStack(mat, amount);
+
+                    if (!lootEntry.enchantments.isEmpty()) {
+                        lootEntry.enchantments.forEach(item::addUnsafeEnchantment);
+                    }
+
+                    loot.add(item);
+                }
+            }
+        }
+
+        return loot;
     }
 
     public int getId() { return id; }
@@ -52,18 +95,5 @@ public class DropArea {
         }
 
         return null; // No valid location found
-    }
-
-
-    public List<ItemStack> generateLoot() {
-        List<ItemStack> loot = new ArrayList<>();
-        Random random = new Random();
-        for (Map.Entry<String, Double> entry : lootTable.entrySet()) {
-            if (random.nextDouble() < entry.getValue()) {
-                Material mat = Material.matchMaterial(entry.getKey());
-                if (mat != null) loot.add(new ItemStack(mat));
-            }
-        }
-        return loot;
     }
 }

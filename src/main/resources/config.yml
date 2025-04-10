@@ -7,10 +7,19 @@ areas:
     z2: 100       # Second Z coordinate of the square area
     interval: 300 # If not using scheduled drops, this is the interval (in seconds) between each automatic drop
     sync: false   # If true, this area's drops happen in sync with other areas that also have sync: true
-    lootTable:    # The loot table for this area: item material names mapped to drop probability (0.0 to 1.0)
+    lootTable:
+      IRON_SWORD:
+        chance: 0.4
+        enchantments:
+          SHARPNESS: 2
+          FIRE_ASPECT: 1
+      DIRT:
+        chance: 0.9
+        stack: true
+        min: 12
+        max: 64
       DIAMOND: 0.1
-      IRON_SWORD: 0.3
-      BREAD: 0.8
+
 
   2:
     world: world      # Another area in the same or different world
@@ -21,6 +30,15 @@ areas:
     interval: 600     # This value only matters if not using the schedule system
     sync: true        # This area's drops will happen at the same time as other sync: true areas
     lootTable:
-      GOLDEN_APPLE: 0.05
-      COOKED_BEEF: 0.7
-      ARROW: 0.6
+      IRON_SWORD:
+        chance: 0.4
+        enchantments:
+          SHARPNESS: 2
+          FIRE_ASPECT: 1
+      DIRT:
+        chance: 0.9
+        stack: true
+        min: 12
+        max: 64
+      DIAMOND: 0.1
+
