@@ -80,7 +80,6 @@ public class ScheduleManager {
                     }
                 }
 
-                // Check for loop restart
                 if (allTriggered() && anyLooping()) {
                     begin();
                 }
