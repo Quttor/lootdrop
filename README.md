@@ -108,5 +108,5 @@ Created by [Quttor](https://github.com/Quttor)
 
 ## 📃 License
 
-MIT License (or specify your own)
+MIT License
 
